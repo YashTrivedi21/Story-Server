@@ -1,0 +1,6 @@
+/ - button with dropdown
+/{genre} - prompt with genre with heading, prompt and hints
+
+genre = dropdown
+
+give me a prompt/idea for a story based on {genre}
