@@ -1,2 +1,0 @@
-API_KEY = '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'
-GENRES = ['Action', 'Adventure', 'Comedy', 'Crime', 'Drama', 'Fantasy', 'Historical', 'Horror', 'Mystery', 'Paranoid', 'Philosophical', 'Political', 'Romance', 'Saga', 'Satire', 'Science Fiction', 'Social', 'Speculative', 'Thriller', 'Urban', 'Western']
