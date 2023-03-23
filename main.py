@@ -8,6 +8,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from fastapi.responses import HTMLResponse
+import repo
 
 app = FastAPI()
 BASE_PATH = Path(__file__).resolve().parent
@@ -15,6 +16,7 @@ TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 templates = Jinja2Templates(directory="templates")
 
 openai.api_key = settings.API_KEY
+session = repo.getSession()
 
 def getJsonResponse(genre):
     command = "Give me a prompt/idea for writing a short story based on genre: " + genre + " please keep the prompt succint and do not add any extra rubbish words i.e. directly just give the prompt in 2-3 lines."
@@ -75,6 +77,7 @@ async def read_root(request: Request):
 def read_item(request: Request):
     print(request.query_params['genre'])
     data = getJsonResponse(request.query_params['genre'])
+    repo.add_story(session, request.query_params['genre'], data['prompt'], data['heading'])
     return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'hints': data['hints'], 'genres': settings.GENRES, 'selected_genre': request.query_params['genre']})
 
 @app.get("/getGenre")
