@@ -12,12 +12,9 @@ from fastapi.responses import HTMLResponse
 app = FastAPI()
 BASE_PATH = Path(__file__).resolve().parent
 TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "templates"))
-#app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-
-
-openai.api_key = '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'
+openai.api_key = settings.API_KEY
 
 def getJsonResponse(genre):
     command = "Give me a prompt/idea for writing a short story based on genre: " + genre + " please keep the prompt succint and do not add any extra rubbish words i.e. directly just give the prompt in 2-3 lines."
@@ -69,20 +66,19 @@ def getJsonResponse(genre):
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     try:
-        greetings = "Hello, welcome to the story generator. Please enter the genre of the story you want to generate."
-        # return {"greetings": greetings}
-        return templates.TemplateResponse('index.html', {'request': request, 'greetings': "hello!"})
+        return templates.TemplateResponse('index.html', {'request': request, 'genres': settings.GENRES})
     except Exception as e:
         print(e)
 
-@app.get("/items", response_class=HTMLResponse)
-async def read_item(request: Request):
-    id = "123"
-    return templates.TemplateResponse("item.html", {"request": request, "id": id})
 
+@app.get("/genre")
+def read_item(request: Request):
+    print(request.query_params['genre'])
+    data = getJsonResponse(request.query_params['genre'])
+    return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'genres': settings.GENRES})
 
-@app.get("/genre/{genre}")
-def read_item(genre: str):
-    return getJsonResponse(genre)
+@app.get("/getGenre")
+def get_genres():
+    return settings.GENRES
 
 uvicorn.run(app, port = 8080)
