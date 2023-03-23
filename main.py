@@ -75,7 +75,7 @@ async def read_root(request: Request):
 def read_item(request: Request):
     print(request.query_params['genre'])
     data = getJsonResponse(request.query_params['genre'])
-    return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'genres': settings.GENRES})
+    return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'genres': settings.GENRES, 'selected_genre': request.query_params['genre']})
 
 @app.get("/getGenre")
 def get_genres():
