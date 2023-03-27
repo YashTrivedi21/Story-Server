@@ -27,6 +27,19 @@
         <h2>{{prompt}}</h2>
         <h3>{{hints}}</h3>
     </div>
+
+    <div>
+        <h1>Previous Prompts</h1>
+        <ul>
+            {% for row in rows %}
+                <li>
+                    <h4>{{row.genre}}</h4>
+                    <h4>{{row.heading}}</h4>
+                    <h4>{{row.prompt}}</h4>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 
 </html>

@@ -68,7 +68,8 @@ def getJsonResponse(genre):
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     try:
-        return templates.TemplateResponse('index.html', {'request': request, 'genres': settings.GENRES})
+        rows = repo.print_database(session)
+        return templates.TemplateResponse('index.html', {'request': request, 'genres': settings.GENRES, 'rows': rows})
     except Exception as e:
         print(e)
 
@@ -78,7 +79,8 @@ def read_item(request: Request):
     print(request.query_params['genre'])
     data = getJsonResponse(request.query_params['genre'])
     repo.add_story(session, request.query_params['genre'], data['prompt'], data['heading'])
-    return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'hints': data['hints'], 'genres': settings.GENRES, 'selected_genre': request.query_params['genre']})
+    rows = repo.print_database(session)
+    return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'hints': data['hints'], 'genres': settings.GENRES, 'selected_genre': request.query_params['genre'], 'rows': rows})
 
 @app.get("/getGenre")
 def get_genres():

@@ -11,12 +11,19 @@ def getSession():
     return session
 
 def print_database(session):
-    statement = select(database_setup.Story)
+    statement = select(database_setup.Story).order_by(database_setup.Story.date.desc())
     results = session.exec(statement)
     heroes = results.all()
-    print(heroes)
+    print(type(heroes[0]))
+    return heroes
 
 def add_story(session, genre, prompt, heading):
     story = database_setup.Story(genre=genre, prompt=prompt, heading=heading)
     session.add(story)
     session.commit()
+
+def get_stories(session, genre):
+    statement = select(database_setup.Story).where(database_setup.Story.genre == genre)
+    results = session.exec(statement)
+    story = results.all()
+    return story
