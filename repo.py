@@ -23,7 +23,7 @@ def add_story(session, genre, prompt, heading):
     session.commit()
 
 def get_stories(session, genre):
-    statement = select(database_setup.Story).where(database_setup.Story.genre == genre)
+    statement = select(database_setup.Story).where(database_setup.Story.genre == genre).order_by(database_setup.Story.date.desc())
     results = session.exec(statement)
     story = results.all()
     return story
