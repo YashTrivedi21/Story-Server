@@ -18,7 +18,16 @@ templates = Jinja2Templates(directory="templates")
 openai.api_key = settings.API_KEY
 session = repo.getSession()
 
+COUNT = 0
+
 def getJsonResponse(genre):
+    
+    global COUNT
+
+    print("getJsonResponse called" + str(COUNT))
+
+    COUNT+=1
+
     command = "Give me a prompt/idea for writing a short story based on genre: " + genre + " please keep the prompt succint and do not add any extra rubbish words i.e. directly just give the prompt in 2-3 lines."
     prompt = openai.Completion.create(
         engine="text-davinci-003",
@@ -29,12 +38,10 @@ def getJsonResponse(genre):
         temperature=0.5,
         frequency_penalty=0.5
     )
-    print(prompt)
     # Get the first choice (i.e. the generated response) from the response object
     chatbot_prompt = prompt.choices[0].text.strip()
     
-    # print(chatbot_prompt)
-
+    
     command_heading = "Give me a good story heading based on prompt: " + chatbot_prompt + " please keep the heading succint and do not add any extra rubbish words i.e. directly just give the heading"
     heading = openai.Completion.create(
         engine="text-davinci-003",
@@ -48,8 +55,7 @@ def getJsonResponse(genre):
 
     chatbot_heading = heading.choices[0].text.strip()
 
-    # print(chatbot_heading)
-
+    
     command_hints = "Give me good 3-4 hints for story based on prompt: " + chatbot_prompt + " please keep the hints succint and do not add any extra rubbish words i.e. directly just give the hints"
     hints = openai.Completion.create(
         engine="text-davinci-003",
@@ -68,8 +74,7 @@ def getJsonResponse(genre):
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     try:
-        rows = repo.print_database(session)
-        return templates.TemplateResponse('index.html', {'request': request, 'genres': settings.GENRES, 'rows': rows})
+        return templates.TemplateResponse('index.html', {'request': request, 'genres': settings.GENRES, 'genre_inc_all': ["All Genres"] + settings.GENRES})
     except Exception as e:
         print(e)
 
@@ -78,12 +83,16 @@ async def read_root(request: Request):
 def read_item(request: Request):
     print(request.query_params['genre'])
     data = getJsonResponse(request.query_params['genre'])
+    print(data)
     repo.add_story(session, request.query_params['genre'], data['prompt'], data['heading'])
-    rows = repo.print_database(session)
-    return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'hints': data['hints'], 'genres': settings.GENRES, 'selected_genre': request.query_params['genre'], 'rows': rows})
+    return templates.TemplateResponse('index.html', {'request': request, 'heading': data['heading'], 'prompt': data['prompt'], 'hints': data['hints'], 'genres': settings.GENRES, 'selected_genre': request.query_params['genre'], 'genre_inc_all': ["All Genres"] + settings.GENRES})
 
 @app.get("/getGenre")
 def get_genres():
     return settings.GENRES
 
+@app.get("/getStories/{genre}")
+def get_stories(genre: str):
+    return repo.get_stories(session, genre)
+    
 uvicorn.run(app, port = 8080)

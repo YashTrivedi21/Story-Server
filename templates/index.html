@@ -27,19 +27,58 @@
         <h2>{{prompt}}</h2>
         <h3>{{hints}}</h3>
     </div>
-
+<!-- 
     <div>
-        <h1>Previous Prompts</h1>
-        <ul>
-            {% for row in rows %}
-                <li>
-                    <h4>{{row.genre}}</h4>
-                    <h4>{{row.heading}}</h4>
-                    <h4>{{row.prompt}}</h4>
-                </li>
+        <h1>Select genre to filter</h1>
+        <label for="genre-select">Filter by Genre:</label>
+        <select id="genre-select">
+            {% for genre in genre_inc_all %}
+            <option value="{{ genre }}">{{ genre }}</option>
             {% endfor %}
-        </ul>
+        </select>
+        <h1>Previous Prompts</h1>
+        <div id="items-container"></div>
+
     </div>
+    <script>
+        const genreSelect = document.getElementById('genre-select');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const response = await fetch(`/getStories/All Genres`);
+            const data = await response.json();
+            const itemsContainer = document.getElementById('items-container');
+            itemsContainer.innerHTML = ''; // Clear the container
+                data.forEach(item => {
+                    // Create HTML elements to display the item
+                    const itemElement = document.createElement('div');
+                    itemElement.textContent = item.prompt;
+                    // Add the item element to the container
+                    itemsContainer.appendChild(itemElement);
+                });
+        });
+        genreSelect.addEventListener('change', async () => {
+            const genre = genreSelect.value;
+            const response = await fetch(`/getStories/${genre}`);
+            const data = await response.json();
+            const itemsContainer = document.getElementById('items-container');
+            if(data.length == 0){
+                itemsContainer.innerHTML = `<h3> There are no prompts for this genre </h3>`;
+            }
+            else{
+                itemsContainer.innerHTML = ''; // Clear the container
+                data.forEach(item => {
+                    // Create HTML elements to display the item
+                    const itemElement = document.createElement('div');
+                    itemElement.textContent = item.prompt;
+                    // Add the item element to the container
+                    itemsContainer.appendChild(itemElement);
+                });
+            
+            }
+        });
+
+    </script> -->
+
 </body>
 
 </html>
