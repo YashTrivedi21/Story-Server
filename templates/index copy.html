@@ -7,11 +7,9 @@
 </head>
 
 <body>
-    <h1>Worüber soll ich heute schreiben?</h1>
-    <p>Hier erhalten Sie <b>Anregungen fürs kreative Schreiben</b>. Lassen Sie sich ein Thema vorschlagen, über das Sie heute eine halbe Stunde schreiben.</p><p><b>Das geht so:</b> Wählen Sie ein Genre aus. (Klicken Sie auf den kleinen Pfeil an der rechten Seite des Auswahlfeldes). Danach klicken Sie auf [Vorschlag anfordern] und nach ca. 10 Sekunden erhalten Sie eine Schreibidee.</p><h2>Schritt 1: Genre auswählen</h2>
-
+    <h1>Generate a prompt for writing a short story with the genre of your choice! </h1>
     <form method="GET" action="/genre/">
-        <label for="genre-dropdown">Wählen Sie ein Genre aus:</label>
+        <label for="genre-dropdown">Select a Genre:</label>
         <select id="genre-dropdown" name="genre">
             {% for genre in genres %}
                 {% if genre == selected_genre %}
@@ -21,28 +19,24 @@
                 {% endif %}
             {% endfor %}
         </select>
-        <button type="Vorschlag erstellen">Vorschlag anfordern</button>
+        <button type="submit">Submit</button>
     </form>
 
     <div>
-        <h2>Ihre Schreibidee für heute:</h2>
-        <h3>{{heading}}</h3>
-        <p>{{prompt}}</p>
-        <h4>Hier sind noch ein paar Anregungen für Ihre Kreativität:</h4>
-        <p>{{hints}}<p>
-        <hr>
-        <h3>Wie diese Seite funktioniert</h3>
-        <p>Diese Vorschläge wurden mit Hilfe von ChatGPT, einem KI-Tool (KI=Künstliche Intelligenz) automatisch erzeugt. Oft sind die Vorschläge anregend und gelungen. Aber manchmal sind sie schlichter Unsinn oder enthalten widersprüchliche Details. In solchen Fälen können Sie </p><ul><li>Die Unstimmigkeiten der Idee als kreative Herausforderung nehmen und eine vielleicht surreale Geschichte daraus machen</li><li>die Aufgabe mit menschlicher Intelligenz abwandeln oder</li><li>einfach einen neuen Vorschlag anfordern.</li></ul><p>Wir raten Ihnen, den ersten Vorschlag zu nehmen, auch wenn das Thema Ihnen nicht ganz zusagt. Sie gewinnen am meisten, wenn Sie sich auf Terrain wagen, das Sie sonst meiden.</p>
+        <h1>{{heading}}</h1>
+        <h2>{{prompt}}</h2>
+        <h3>{{hints}}</h3>
     </div>
 
     <div>
-        <h3>Die bisherigen Schreibideen</h3>
-  <p>Hier sehen Sie, welche Ideen ChatGPT für andere Besucher erfunden hat. Wenn eines dieser Tehmen Sie besonders anspricht, dürfen Sie es gerne auch für sich verwenden.</p>      <label for="genre-select">Nach Genre filtern:</label>
+        <h1>Select genre to filter</h1>
+        <label for="genre-select">Filter by Genre:</label>
         <select id="genre-select">
             {% for genre in genre_inc_all %}
                 <option value="{{ genre }}">{{ genre }}</option>
             {% endfor %}
-        </select><p>&nbsp;</p>
+        </select>
+        <h1>Previous Prompts</h1>
         <div id="items-container"></div>
     </div>
     <script>
@@ -67,7 +61,7 @@
             const data = await response.json();
             const itemsContainer = document.getElementById('items-container');
             if(data.length == 0){
-                itemsContainer.innerHTML = `<h3>Zu diesem Genre gibt es noch keine Vorschläge.</h3>`;
+                itemsContainer.innerHTML = `<h3> There are no prompts for this genre </h3>`;
             }
             else{
                 itemsContainer.innerHTML = ''; // Clear the container

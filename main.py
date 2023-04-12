@@ -28,43 +28,43 @@ def getJsonResponse(genre):
 
     COUNT+=1
 
-    command = "Give me a prompt/idea for writing a short story based on genre: " + genre + " please keep the prompt succint and do not add any extra rubbish words i.e. directly just give the prompt in 2-3 lines."
+    command = "Give me an idea for a 15-minute creative writing exercise. Keep the prompt inspiring like a cliffhanger. Write in German (de-ch). Below the idea, add Ideen fürs Schreiben:  followed by a few hints that guide the writer for completing the assignment. Here are some examples: (Auf der Suchen nach dem heikräftigen Pilz Martin und Julia suchen nach einer geheimnisvollen Siedlung mitten im undurchdringlichen Dschungel des Amazonasgebiets. Dort soll ein seltener, türkis-glänzender Pilz wachsen, der fast alle Krankheiten heilen kann. Ein Trupp bewaffneter Söldner verfolgt sie, um ihnen den Pilz abzujagen und das grosse Geld zu machen. Ideen fürs Schreiben: Warum wollen Martin und Julia den Pilz finden? Wollen Sie einem Angehörigen helfen? Eine Stiftung gründen? Was sonst? Wie sieht die Landschaft im Amazonas aus? Wie bewegen sich die beiden Protagonisten und ihre Verfolger fort? Mit Booten? Mit Jeeps? Mit Flugzeugen? Wem begegnen sie unterwegs, der bei der Suche helfen kann?) (Die schwarze Limousine Als Franz von der Arbeit nach Hause kommt, parkt eine schwarze Limousine in der Einfahrt zu seiner Villa. Alle Lichter im Haus sind hell erleuchtet. Die Haustür steht weit offen, aber es ist kein Geräusch zu hören. Ideen fürs Schreiben: Welche Hoffnungen oder Befürchtungen hat Franz, als er die dunkle Limousine sieht? Was macht Franz beruflich? Besteht ein Zusammenhang zwischen seiner Arbeit und den Ereignissen in seinem Haus? Wie genau sieht das Haus aus? In welcher Umgebung steht es? Was entdeckt Franz, als er das Hause betritt? Wer lebt sonst noch in dem Haus? Seine Ehefrau und Kinder? Oder sein scwuler Partner? Oder seine Mutter mit ihren 12 Katzen?) (Eine Jugendliebe in Paris Gabi schaut aus dem Fenster eines kleinen Pariser Cafés und beobachtet, wie sich die Welt in den Regenpfützen spiegelt. Dann tritt ein Mann in das Café, stellt seinen Regenschirm ab und hängt seinen Mantel an die Garderobe. Gabi traut ihren Augen nicht, als Sie ihre verschollene Jugendliebe erkennt. Ideen fürs Schreiben: Woran erkennt Gabi, dass der Mann ihre Jugendliebe ist? Warum haben die beiden sich aus den Augen verloren? Was ist ihre aktuelle Lebenssituation? Sind beide frei, sich aufeinander einzulassen? Gabi fällt es sicher nicht ganz leicht, den Mann anzusprechen. Beschreibe ihren inneren Zwiespalt.). Also use the genre as: " + genre
     prompt = openai.Completion.create(
         engine="text-davinci-003",
         prompt=command,
-        max_tokens=1024,
+        max_tokens=240,
         n=1,
         stop=None,
-        temperature=0.5,
-        frequency_penalty=0.5
+        temperature=0.7,
+        frequency_penalty=0.7,  
     )
     # Get the first choice (i.e. the generated response) from the response object
     chatbot_prompt = prompt.choices[0].text.strip()
     
     
-    command_heading = "Give me a good story heading based on prompt: " + chatbot_prompt + " please keep the heading succint and do not add any extra rubbish words i.e. directly just give the heading"
+    command_heading = "Give me a very short story heading based on prompt: " + chatbot_prompt + ". Do not add introductry or closing remarks. Just give the heading. Write in German (de-ch)."
     heading = openai.Completion.create(
         engine="text-davinci-003",
         prompt=command_heading,
-        max_tokens=1024,
+        max_tokens=40,
         n=1,
         stop=None,
-        temperature=0.5,
-        frequency_penalty=0.5
+        temperature=0.3,
+        frequency_penalty=0.7
     )
 
     chatbot_heading = heading.choices[0].text.strip()
 
     
-    command_hints = "Give me good 3-4 hints for story based on prompt: " + chatbot_prompt + " please keep the hints succint and do not add any extra rubbish words i.e. directly just give the hints"
+    command_hints = "Give me 3-4 elaborate hints for a writing assignment based on prompt: " + chatbot_prompt + ". The hints should inspire thinking about the backstory, about the surroundings, the character traits of the characters involved and about the next things that could happen next. Write in hypothetical style like 'Imagine that ...' or 'Consider ...' or 'How would the story contunue ...' or 'Think about ...' or 'What if ...'. Do not add introductry or closing remarks. Just give the hints.Write in German (de-ch). Check for German grammar errors."
     hints = openai.Completion.create(
         engine="text-davinci-003",
         prompt=command_hints,
-        max_tokens=1024,
+        max_tokens=400,
         n=1,
         stop=None,
-        temperature=0.5,
-        frequency_penalty=0.5
+        temperature=0.7,
+        frequency_penalty=0.7
     )
 
     chatbot_hints = hints.choices[0].text.strip()
