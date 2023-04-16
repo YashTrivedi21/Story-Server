@@ -17,8 +17,8 @@ def print_database(session):
     print(heroes)
     return heroes
 
-def add_story(session, genre, prompt, heading):
-    story = database_setup.Story(genre=genre, prompt=prompt, heading=heading)
+def add_story(session, genre, response):
+    story = database_setup.Story(genre=genre, response=response)
     session.add(story)
     session.commit()
 

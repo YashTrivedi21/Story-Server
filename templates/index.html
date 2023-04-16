@@ -25,14 +25,7 @@
     </form>
 
     <div>
-        <h2>Ihre Schreibidee für heute:</h2>
-        <h3>{{heading}}</h3>
-        <p>{{prompt}}</p>
-        <h4>Hier sind noch ein paar Anregungen für Ihre Kreativität:</h4>
-        <p>{{hints}}<p>
-        <hr>
-        <h3>Wie diese Seite funktioniert</h3>
-        <p>Diese Vorschläge wurden mit Hilfe von ChatGPT, einem KI-Tool (KI=Künstliche Intelligenz) automatisch erzeugt. Oft sind die Vorschläge anregend und gelungen. Aber manchmal sind sie schlichter Unsinn oder enthalten widersprüchliche Details. In solchen Fälen können Sie </p><ul><li>Die Unstimmigkeiten der Idee als kreative Herausforderung nehmen und eine vielleicht surreale Geschichte daraus machen</li><li>die Aufgabe mit menschlicher Intelligenz abwandeln oder</li><li>einfach einen neuen Vorschlag anfordern.</li></ul><p>Wir raten Ihnen, den ersten Vorschlag zu nehmen, auch wenn das Thema Ihnen nicht ganz zusagt. Sie gewinnen am meisten, wenn Sie sich auf Terrain wagen, das Sie sonst meiden.</p>
+        {{response | safe}}
     </div>
 
     <div>
@@ -56,7 +49,7 @@
                 data.forEach(item => {
                     // Create HTML elements to display the item
                     const itemElement = document.createElement('div');
-                    itemElement.textContent = item.prompt;
+                    itemElement.innerHTML = item.response;
                     // Add the item element to the container
                     itemsContainer.appendChild(itemElement);
                 });
@@ -74,7 +67,7 @@
                 data.forEach(item => {
                     // Create HTML elements to display the item
                     const itemElement = document.createElement('div');
-                    itemElement.textContent = item.prompt;
+                    itemElement.innerHTML = item.response;
                     // Add the item element to the container
                     itemsContainer.appendChild(itemElement);
                 });

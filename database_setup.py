@@ -7,8 +7,7 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select
 class Story(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     genre: str = Field(index=True)
-    prompt: str
-    heading: str
+    response: str
     date: datetime = Field(default_factory=datetime.now)
 
 
